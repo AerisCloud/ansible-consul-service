@@ -1,0 +1,21 @@
+- name: "Create consul directories"
+  file:
+    path: "{{ item }}"
+    owner: consul
+    group: consul
+    mode: 0755
+    state: directory
+  with_items:
+    - /etc/consul
+  tags: ['consul-service']
+
+- name: "Configure consul"
+  template:
+    dest: /etc/consul/service_{{ consul_service_name }}.json
+    src: service.json.j2
+    owner: consul
+    group: consul
+    mode: 0644
+  notify:
+    - Reload consul
+  tags: ['consul-service', 'files']

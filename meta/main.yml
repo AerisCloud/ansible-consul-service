@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Emilien Kenler <emilien@kkvesper.jp>
+  description: Create the configuration file for a consul service
+  company: KK Vesper
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+dependencies: []
