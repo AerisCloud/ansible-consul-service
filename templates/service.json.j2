@@ -1,12 +1,13 @@
 {
   "service": {
-    "name": "{{ consul_service_name }}",
-    {% if consul_service_port is defined %}
+    "name": "{% if item is defined %}{{ item }}{% else %}{{ consul_service_name }}{% endif %}",
+    {% if consul_service_port is defined -%}
     "port": {{ consul_service_port }},
-    {% endif %}
+    {% endif -%}
     {% if consul_service_address is defined -%}
     "address": "{{ consul_service_address }}",
-    {% endif %}
-    "enableTagOverride": true
+    {% endif -%}
+    "enableTagOverride": true,
+    "tags": {{ consul_service_tags|to_json }}
   }
 }

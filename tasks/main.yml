@@ -11,11 +11,24 @@
 
 - name: "Configure consul"
   template:
-    dest: /etc/consul/service_{{ consul_service_name }}.json
+    dest: "/etc/consul/service_{{ consul_service_name }}.json"
     src: service.json.j2
     owner: consul
     group: consul
     mode: 0644
+  when: consul_service_name is defined
+  notify:
+    - Reload consul
+  tags: ['consul-service', 'files']
+
+- name: "Configure consul"
+  template:
+    dest: "/etc/consul/service_{{ item }}.json"
+    src: service.json.j2
+    owner: consul
+    group: consul
+    mode: 0644
+  with_items: "{{ consul_service_names }}"
   notify:
     - Reload consul
   tags: ['consul-service', 'files']
