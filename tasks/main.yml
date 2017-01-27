@@ -6,12 +6,12 @@
     mode: 0755
     state: directory
   with_items:
-    - /etc/consul
+    - "{{ consul_config_path }}"
   tags: ['consul-service']
 
 - name: "Configure consul"
   template:
-    dest: "/etc/consul/service_{{ consul_service_name }}.json"
+    dest: "{{ consul_config_path }}/service_{{ consul_service_name }}.json"
     src: service.json.j2
     owner: consul
     group: consul
@@ -23,7 +23,7 @@
 
 - name: "Configure consul"
   template:
-    dest: "/etc/consul/service_{{ item }}.json"
+    dest: "{{ consul_config_path }}/service_{{ item }}.json"
     src: service.json.j2
     owner: consul
     group: consul

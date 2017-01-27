@@ -1,4 +1,6 @@
 - name: "Reload consul"
-  shell: consul reload
+  service:
+    name: consul
+    state: reloaded
   ignore_errors: True
   tags: ['consul-service']

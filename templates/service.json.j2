@@ -8,6 +8,42 @@
     "address": "{{ consul_service_address }}",
     {% endif -%}
     "enableTagOverride": true,
+    {% if consul_service_checks is defined -%}
+    "checks": [
+      {% for check in consul_service_checks -%}
+      {
+        {% if check.type == "http" -%}
+        "name": "{{ check.id|default(consul_service_name) }} HTTP check",
+        "http": {{ check.http | to_json }},
+        {% elif check.type == "tcp" -%}
+        "name": "{{ check.id|default(consul_service_name) }} TCP check",
+        {% if check.tcp is defined -%}
+        "tcp": {{ check.tcp | to_json }},
+        {% endif -%}
+        {% elif check.type == "script" -%}
+        "name": "{{ check.id|default(consul_service_name) }} Script check",
+        "script": {{ check.script | to_json }},
+        {% elif check.type == "ttl" -%}
+        "name": "{{ check.id|default(consul_service_name) }} TTL check",
+        "ttl": {{ check.ttl | to_json }},
+        {% elif check.type == "docker" -%}
+        "name": "{{ check.id|default(consul_service_name) }} Docker check",
+        "docker_container_id": {{ check.docker_container_id | to_json }},
+        "shell": {{ check.shell | to_json }},
+        "script": {{ check.script | to_json }},
+        {% endif -%}
+        {% if check.deregister_critical_service_after is defined -%}
+        "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},
+        {% endif -%}
+        {% if check.type != "ttl" -%}
+        "interval": {{ check.interval|default("10s") | to_json }},
+        "timeout": {{ check.timeout|default("1s") | to_json }},
+        {% endif -%}
+        "id": "{{ check.id|default(consul_service_name) }}"
+      }
+      {% endfor -%}
+    ],
+    {% endif -%}
     "tags": {{ consul_service_tags|to_json }}
   }
 }
