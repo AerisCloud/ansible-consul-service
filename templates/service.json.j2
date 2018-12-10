@@ -7,7 +7,7 @@
     {% if consul_service_address is defined -%}
     "address": "{{ consul_service_address }}",
     {% endif -%}
-    "enableTagOverride": true,
+    "enable_tag_override": true,
     {% if consul_service_checks is defined -%}
     "checks": [
       {% for check in consul_service_checks -%}
@@ -22,7 +22,7 @@
         {% endif -%}
         {% elif check.type == "script" -%}
         "name": "{{ check.id|default(consul_service_name) }} Script check",
-        "script": {{ check.script | to_json }},
+        "args": {{ check.args | to_json }},
         {% elif check.type == "ttl" -%}
         "name": "{{ check.id|default(consul_service_name) }} TTL check",
         "ttl": {{ check.ttl | to_json }},
@@ -30,7 +30,7 @@
         "name": "{{ check.id|default(consul_service_name) }} Docker check",
         "docker_container_id": {{ check.docker_container_id | to_json }},
         "shell": {{ check.shell | to_json }},
-        "script": {{ check.script | to_json }},
+        "args": {{ check.args | to_json }},
         {% endif -%}
         {% if check.deregister_critical_service_after is defined -%}
         "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},

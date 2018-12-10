@@ -55,8 +55,8 @@ consul_service_checks:
   - id: web-script-check
     name: "Runs script and checks the exit code"
     type: script
-    # required, cannot take arguments
-    script: "/usr/local/bin/myscript"
+    # required, should be an array ["/path/to/cmd", "arg1", "arg2"]
+    args: ["/usr/local/bin/myscript"]
   - id: web-ttl-check
     name: "Stays up for as long as the TTL value, needs to be pinged through the HTTP api"
     type: ttl
@@ -68,7 +68,7 @@ consul_service_checks:
     # required, the ID of the container to run the check in
     docker_container_id: "1d88ad189f4"
     shell: "/bin/bash"
-    script: "/app/local-check.py"
+    args: ["/app/local-check.py"]
 ```
 
 The following variables are also available:
