@@ -9,12 +9,14 @@ Create the configuration file for a consul service.
 ```yaml
   roles:
     - role: consul-service
-      consul_service_name: bastion
-      consul_service_address: "{{ ec2_ip_address }}"
+      vars:
+        consul_service_name: bastion
+        consul_service_address: "{{ ec2_ip_address }}"
     - role: consul-service
-      consul_service_names: ['web', 'api', 'worker']
-      consul_service_name: app
-      consul_service_tags: ['staging']
+      vars:
+        consul_service_names: ['web', 'api', 'worker']
+        consul_service_name: app
+        consul_service_tags: ['staging']
 ```
 
 ### In role dependencies
@@ -22,9 +24,10 @@ Create the configuration file for a consul service.
 ```yaml
 dependencies:
   - role: consul-service
-    consul_service_name: ldap
-    consul_service_port: 389
-    consul_service_tags: ['production']
+    vars:
+      consul_service_name: ldap
+      consul_service_port: 389
+      consul_service_tags: ['production']
 ```
 
 ## Variables
