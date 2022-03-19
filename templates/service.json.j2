@@ -15,6 +15,19 @@
         {% if check.type == "http" -%}
         "name": "{{ check.id|default(consul_service_name) }} HTTP check",
         "http": {{ check.http | to_json }},
+        "method": "{{ check.method|default("GET") }}",
+        {% if check.tls_server_name is defined -%}
+        "tls_server_name": "{{ check.tls_server_name|default("") }}",
+        {%- endif %}
+        {% if check.tls_skip_verify is defined -%}
+        "tls_skip_verify": {{ check.tls_skip_verify|default(False) | to_json }},
+        {%- endif %}
+        {% if check.header is defined -%}
+        "header": {{ check.header | to_json }},
+        {%- endif %}
+        {% if check.body is defined -%}
+        "body": {{ check.body | to_json }},
+        {%- endif %}
         {% elif check.type == "tcp" -%}
         "name": "{{ check.id|default(consul_service_name) }} TCP check",
         {% if check.tcp is defined -%}
