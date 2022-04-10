@@ -57,6 +57,7 @@
       {% endfor -%}
     ],
     {% endif -%}
+    "meta": {{ consul_service_meta|to_json }},
     "tags": {{ consul_service_tags|to_json }}
   }
 }
