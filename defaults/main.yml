@@ -1,3 +1,4 @@
 consul_config_path: /etc/consul
 consul_service_tags: []
 consul_service_names: []
+consul_service_meta: {}
